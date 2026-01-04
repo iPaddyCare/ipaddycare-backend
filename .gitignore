@@ -242,3 +242,7 @@ logs/
 # Project specific
 # Add any project-specific files or directories here
 
+# saved models -> this is the directory that contains the saved models 
+# dont include them becuse those can be large
+app/ml/models/rice_variety/artifacts/
+app/ml/notebook/*
