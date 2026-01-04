@@ -1,0 +1,2 @@
+"""Rice variety model module"""
+
