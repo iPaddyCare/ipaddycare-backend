@@ -171,43 +171,6 @@ If you need to configure environment variables, create a `.env` file in the root
 
 The application uses `python-dotenv` to load environment variables from a `.env` file.
 
-### Managing Dependencies
-
-When adding new dependencies to the project:
-
-1. **Install the new package:**
-   ```bash
-   pip install <package-name>
-   ```
-
-2. **Freeze requirements.txt:**
-   ```bash
-   pip freeze > requirements.txt
-   ```
-
-   ⚠️ **Important:** When freezing `requirements.txt`:
-   - **DO** add newly installed packages and their dependencies
-   - **DO NOT** change existing dependency versions unless intentionally upgrading
-   - Review the generated `requirements.txt` to ensure only new dependencies were added
-   - If versions changed unintentionally, restore the original versions for existing packages
-
-3. **Best Practice:** After freezing, manually review `requirements.txt` to ensure:
-   - New dependencies are included
-   - Existing dependency versions remain unchanged
-   - All dependencies are properly pinned with version numbers
-
-**Example workflow:**
-```bash
-# Install a new package
-pip install email-validator
-
-# Freeze requirements (but review carefully!)
-pip freeze > requirements.txt
-
-# Review requirements.txt to ensure existing versions weren't changed
-# If needed, manually restore original versions for existing packages
-```
-
 ## 🧪 Testing the API
 
 You can test the API endpoints using:
@@ -276,26 +239,6 @@ Make sure you're using Python 3.10. If you need to install Python 3.10 or switch
 - **Windows**: Use `py -3.10` to specify Python 3.10
 - **Linux/Mac**: Use `python3.10` or install Python 3.10 via your package manager
 
-### Invalid Distribution Warnings
-
-If you see warnings like `WARNING: Ignoring invalid distribution -ip`:
-- This usually occurs after migrating Python versions (e.g., 3.13 to 3.10)
-- Corrupted package directories (like `~ip`) may remain in `venv/lib/site-packages`
-- **Solution:** Remove corrupted directories manually:
-  ```powershell
-  # Windows PowerShell
-  Remove-Item -Recurse -Force "venv\lib\site-packages\~ip"
-  Remove-Item -Recurse -Force "venv\lib\site-packages\~ip-*.dist-info"
-  ```
-- If warnings persist, consider recreating the virtual environment
-
-### Email Validator Warning
-
-If you see `email-validator not installed, email fields will be treated as str`:
-- This is a Pydantic recommendation for email field validation
-- **Solution:** Install email-validator: `pip install email-validator`
-- Then freeze requirements: `pip freeze > requirements.txt` (review for version changes)
-
 ## 📧 Contact
 
 - **Name**: iPaddyCare
@@ -303,4 +246,6 @@ If you see `email-validator not installed, email fields will be treated as str`:
 - **Email**: contact@ipaddycare.com
 
 ## 📄 License
+
+[Add your license information here]
 
