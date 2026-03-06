@@ -4,6 +4,7 @@ from typing import Dict, Type
 
 from app.ml.base import MLModel
 from app.ml.models.rice_variety.model import RiceVarietyModel
+from app.ml.models.rice_variety.new_model import NewRiceVarietyModel
 from app.utils.exceptions import ModelLoadError
 
 
@@ -12,6 +13,7 @@ class ModelLoader:
     
     _model_classes: Dict[str, Type[MLModel]] = {
         "rice_variety": RiceVarietyModel,
+        "rice_variety_new": NewRiceVarietyModel,
     }
     
     @classmethod
