@@ -63,9 +63,18 @@ class NewRiceVarietyService:
                 for rec in prediction_result['recommendations']
             ]
             
+            # return RiceVarietyPredictionResponse(
+            #     best_variety=prediction_result['best_variety'],
+            #     expected_yield=prediction_result['expected_yield'],
+            #     recommendations=recommendations,
+            #     all_predictions=prediction_result['all_predictions']
+            # )
+            # Get top recommendation
+            top_recommendation = prediction_result['recommendations'][0]
+
             return RiceVarietyPredictionResponse(
-                best_variety=prediction_result['best_variety'],
-                expected_yield=prediction_result['expected_yield'],
+                best_variety=top_recommendation['variety'],
+                expected_yield=top_recommendation['predicted_yield'],
                 recommendations=recommendations,
                 all_predictions=prediction_result['all_predictions']
             )

@@ -16,7 +16,7 @@ class RiceVarietyPredictionRequest(BaseModel):
     
     # Categorical features
     texture: Literal["loamy", "sandy", "clayey"] = Field(..., description="Soil texture type")
-    prev_crop: Literal["rice", "maize", "fallow", "legume"] = Field(..., description="Previous crop type")
+    prev_crop: Literal["rice", "maize", "fallow", "legume","vegetable"] = Field(..., description="Previous crop type")
     season: Literal["Maha", "Yala"] = Field(..., description="Season (Maha or Yala)")
     soil_zone: Literal["Dry", "Intermediate", "Wet"] = Field(..., description="Soil zone type")
     
