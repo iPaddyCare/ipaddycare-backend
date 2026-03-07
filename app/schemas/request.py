@@ -70,3 +70,19 @@ class SeedMoisturePredictionRequest(BaseModel):
                 "bulk_density": 0.75,
             }
         }
+
+
+class SeedDetectionPredictionRequest(BaseModel):
+    """Request schema for paddy seed classification (image as base64)"""
+
+    image_base64: str = Field(
+        ...,
+        description="Base64-encoded image string (JPEG/PNG). Optional prefix: data:image/jpeg;base64,",
+    )
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "image_base64": "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
+            }
+        }
