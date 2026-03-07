@@ -57,6 +57,8 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 **On Windows (Command Prompt):**
 ```cmd
 venv\Scripts\activate.bat
+
+venv\Scripts\activate
 ```
 
 **On Linux/Mac:**
