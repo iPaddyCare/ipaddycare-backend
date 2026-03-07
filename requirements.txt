@@ -23,3 +23,5 @@ numpy==2.2.6
 pandas==2.3.3
 imbalanced-learn==0.14.0
 packaging>=21.0
+tensorflow>=2.15.0
+opencv-python-headless>=4.8.0

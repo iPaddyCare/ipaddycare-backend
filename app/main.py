@@ -80,6 +80,21 @@ async def startup_event():
         import traceback
         logger.error(traceback.format_exc())
 
+    # Load seed detection model (paddy seed classifier)
+    try:
+        seed_detection_path = base_dir / "app" / "ml" / "models" / "seed_detection"
+        logger.info(f"Loading seed detection model from: {seed_detection_path}")
+        seed_detection_model = ModelLoader.load_model("seed_detection", str(seed_detection_path))
+        ModelRegistry.register("seed_detection", seed_detection_model)
+        logger.info("Seed detection model loaded successfully")
+    except ModelLoadError as e:
+        logger.error(f"Failed to load seed detection model: {e}")
+        # Don't raise - allow app to start but predictions will fail gracefully
+    except Exception as e:
+        logger.error(f"Unexpected error loading seed detection model: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+
 
 @app.on_event("shutdown")
 async def shutdown_event():

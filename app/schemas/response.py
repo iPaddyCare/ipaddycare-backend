@@ -60,6 +60,26 @@ class SeedMoisturePredictionResponse(BaseModel):
         }
 
 
+class SeedDetectionPredictionResponse(BaseModel):
+    """Response schema for paddy seed classification"""
+
+    predicted_class: str = Field(
+        ...,
+        description="Predicted class: BG_375, Suwadel, P_Perumal, or Background",
+    )
+    confidence: float = Field(..., description="Prediction confidence (0-1)")
+    class_id: int = Field(..., description="Class index (0-3)")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "predicted_class": "BG_375",
+                "confidence": 0.95,
+                "class_id": 0,
+            }
+        }
+
+
 class ErrorResponse(BaseModel):
     """Error response schema"""
 
