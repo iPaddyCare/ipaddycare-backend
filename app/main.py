@@ -65,6 +65,21 @@ async def startup_event():
         import traceback
         logger.error(traceback.format_exc())
 
+    # Load seed moisture model
+    try:
+        seed_moisture_path = base_dir / "app" / "ml" / "models" / "seed_moisture"
+        logger.info(f"Loading seed moisture model from: {seed_moisture_path}")
+        seed_moisture_model = ModelLoader.load_model("seed_moisture", str(seed_moisture_path))
+        ModelRegistry.register("seed_moisture", seed_moisture_model)
+        logger.info("Seed moisture model loaded successfully")
+    except ModelLoadError as e:
+        logger.error(f"Failed to load seed moisture model: {e}")
+        # Don't raise - allow app to start but predictions will fail gracefully
+    except Exception as e:
+        logger.error(f"Unexpected error loading seed moisture model: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
