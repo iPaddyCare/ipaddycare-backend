@@ -53,6 +53,33 @@ class DryingScheduleModel(MLModel):
             "weather_wind_max_kmh": float(input_data["weather_wind_max_kmh"]),
         }
 
+    def _calibrate_days(self, raw_days: float, row: Dict[str, Any]) -> float:
+
+        days = max(0.0, raw_days)
+        excess = max(0.0, float(row["moisture_excess_pct"]))
+        precip = max(0.0, float(row["weather_precip_mm"]))
+        tmax = float(row["weather_temp_max_c"])
+        tmin = float(row["weather_temp_min_c"])
+        wind = max(0.0, float(row["weather_wind_max_kmh"]))
+
+        temp_avg = (tmax + tmin) / 2.0
+        # Favorability score in [0, 1]
+        temp_score = min(1.0, max(0.0, (temp_avg - 20.0) / 12.0))
+        rain_penalty = 0.45 if precip >= 1.0 else 1.0
+        wind_score = min(1.0, wind / 18.0)
+        favorability = (temp_score * 0.65 + wind_score * 0.35) * rain_penalty
+
+        # Low excess moisture should converge quickly under fair weather.
+        if excess <= 2.0:
+            days *= (0.5 + (1.0 - favorability) * 0.35)
+        elif excess <= 3.5:
+            days *= (0.7 + (1.0 - favorability) * 0.25)
+        else:
+            days *= (0.85 + (1.0 - favorability) * 0.2)
+
+        # keep within practical bounds
+        return max(0.0, min(30.0, days))
+
     def predict(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         if not self.is_loaded():
             raise PredictionError("Model is not loaded. Call load() first.")
@@ -92,15 +119,17 @@ class DryingScheduleModel(MLModel):
 
             label = str(self.classifier.predict(x_cls)[0])
             reg_days = float(self.regressor.predict(x_reg)[0])
+            calibrated_days = self._calibrate_days(reg_days, row)
 
             needs_drying = label == "needs_drying"
-            days_to_target = max(0, int(round(reg_days))) if needs_drying else 0
+            days_to_target = max(0, int(round(calibrated_days))) if needs_drying else 0
 
             return {
                 "label": label,
                 "needs_drying": needs_drying,
                 "days_to_target": days_to_target,
-                "predicted_remaining_days": max(0.0, reg_days),
+                "predicted_remaining_days": max(0.0, calibrated_days),
+                "raw_predicted_days": max(0.0, reg_days),
                 "target_moisture": self.TARGET_MOISTURE,
             }
         except Exception as e:
