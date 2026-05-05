@@ -80,6 +80,22 @@ async def startup_event():
         import traceback
         logger.error(traceback.format_exc())
 
+
+
+    # Load drying schedule model
+    try:
+        drying_schedule_path = base_dir / "app" / "ml" / "models" / "drying_schedule"
+        logger.info(f"Loading drying schedule model from: {drying_schedule_path}")
+        drying_schedule_model = ModelLoader.load_model("drying_schedule", str(drying_schedule_path))
+        ModelRegistry.register("drying_schedule", drying_schedule_model)
+        logger.info("Drying schedule model loaded successfully")
+    except ModelLoadError as e:
+        logger.error(f"Failed to load drying schedule model: {e}")
+    except Exception as e:
+        logger.error(f"Unexpected error loading drying schedule model: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+
     # Load seed detection model (paddy seed classifier)
     try:
         seed_detection_path = base_dir / "app" / "ml" / "models" / "seed_detection"

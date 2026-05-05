@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1 import health, rice_variety, seed_moisture, seed_detection
+from app.api.v1 import health, rice_variety, seed_moisture, seed_detection, drying_schedule
 
 api_router = APIRouter(prefix="/api/v1")
 
@@ -14,4 +14,10 @@ api_router.include_router(
     seed_detection.router,
     prefix="/seed-detection",
     tags=["Seed Detection"],
+)
+
+api_router.include_router(
+    drying_schedule.router,
+    prefix="/drying-schedule",
+    tags=["Drying Schedule"],
 )

@@ -86,3 +86,24 @@ class ErrorResponse(BaseModel):
     error: str = Field(..., description="Error message")
     detail: Optional[str] = Field(None, description="Detailed error information")
 
+
+
+class DryingSchedulePredictionResponse(BaseModel):
+    """Response schema for drying schedule prediction"""
+
+    label: str = Field(..., description="Predicted label: needs_drying/no_drying")
+    needs_drying: bool = Field(..., description="Whether drying is needed")
+    days_to_target: int = Field(..., ge=0, description="Estimated days to target moisture")
+    predicted_remaining_days: float = Field(..., ge=0.0, description="Raw model output (days)")
+    target_moisture: float = Field(..., description="Target moisture percentage")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "label": "needs_drying",
+                "needs_drying": True,
+                "days_to_target": 3,
+                "predicted_remaining_days": 2.7,
+                "target_moisture": 13.0
+            }
+        }

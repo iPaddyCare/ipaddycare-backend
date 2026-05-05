@@ -7,6 +7,7 @@ from app.ml.models.rice_variety.model import RiceVarietyModel
 from app.ml.models.rice_variety.new_model import NewRiceVarietyModel
 from app.ml.models.seed_moisture.model import SeedMoistureModel
 from app.ml.models.seed_detection.model import SeedDetectionModel
+from app.ml.models.drying_schedule.model import DryingScheduleModel
 from app.utils.exceptions import ModelLoadError
 
 
@@ -18,6 +19,7 @@ class ModelLoader:
         "rice_variety_new": NewRiceVarietyModel,
         "seed_moisture": SeedMoistureModel,
         "seed_detection": SeedDetectionModel,
+        "drying_schedule": DryingScheduleModel,
     }
     
     @classmethod

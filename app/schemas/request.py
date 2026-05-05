@@ -86,3 +86,28 @@ class SeedDetectionPredictionRequest(BaseModel):
                 "image_base64": "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
             }
         }
+
+
+class DryingSchedulePredictionRequest(BaseModel):
+    """Request schema for drying schedule prediction"""
+
+    current_moisture_pct: float = Field(..., ge=0.0, le=100.0, description="Current/predicted moisture (%)")
+    moisture_excess_pct: float = Field(..., description="Moisture excess vs target 13%")
+    attempt_no: int = Field(default=1, ge=1, description="Attempt number (default 1)")
+    weather_temp_max_c: float = Field(..., description="Daily maximum temperature (°C)")
+    weather_temp_min_c: float = Field(..., description="Daily minimum temperature (°C)")
+    weather_precip_mm: float = Field(..., ge=0.0, description="Daily precipitation (mm)")
+    weather_wind_max_kmh: float = Field(..., ge=0.0, description="Daily max wind speed (km/h)")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "current_moisture_pct": 16.2,
+                "moisture_excess_pct": 3.2,
+                "attempt_no": 1,
+                "weather_temp_max_c": 31.5,
+                "weather_temp_min_c": 24.0,
+                "weather_precip_mm": 0.0,
+                "weather_wind_max_kmh": 14.0
+            }
+        }
