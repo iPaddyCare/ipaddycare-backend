@@ -98,14 +98,16 @@ class DryingScheduleModel(MLModel):
                 }
             ])
 
-            # Regressor features with one-hot district alignment
+            tmax = float(row["weather_temp_max_c"])
+            tmin = float(row["weather_temp_min_c"])
             x_reg = pd.DataFrame([
                 {
                     "attempt_no": row["attempt_no"],
                     "current_moisture_pct": row["current_moisture_pct"],
                     "moisture_excess_pct": row["moisture_excess_pct"],
-                    "weather_temp_max_c": row["weather_temp_max_c"],
-                    "weather_temp_min_c": row["weather_temp_min_c"],
+                    "weather_temp_max_c": tmax,
+                    "weather_temp_min_c": tmin,
+                    "weather_temp_range_c": tmax - tmin,
                     "weather_precip_mm": row["weather_precip_mm"],
                     "weather_wind_max_kmh": row["weather_wind_max_kmh"],
                 }
